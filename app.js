@@ -1,33 +1,43 @@
 const express = require('express');
+const path = require('path');
 const fs = require('fs');
-const bcrypt = require('bcrypt');
-const cors = require('cors');
-
+const cors = require('cors'); // Import CORS
 const app = express();
+const PORT = process.env.PORT || 3000;
+
+// Use CORS middleware
 app.use(cors());
+
+// Middleware to parse JSON bodies
 app.use(express.json());
 
-app.get('/', (req, res) => {
-    res.send('Server is running!');
-  });
+// Serve static files from the "public" directory
+app.use(express.static(path.join(__dirname, 'public')));
 
-// Route to save email and hashed password
-app.post('/save', async (req, res) => {
+// Route to handle form submissions
+app.post('/save', (req, res) => {
   const { email, password } = req.body;
 
-  try {
-    // Hash the password
-    const hashedPassword = await bcrypt.hash(password, 10);
-
-    // Save email and hashed password to a file
-    const data = `Email: ${email}, Password: ${hashedPassword}\n`;
-    fs.appendFile('users.txt', data, (err) => {
-      if (err) return res.status(500).send('Error saving data');
-      res.status(200).send('Data saved successfully');
-    });
-  } catch (err) {
-    res.status(500).send('Error processing data');
+  if (!email || !password) {
+    return res.status(400).send('Email and password are required');
   }
+
+  // Format the data to save
+  const data = `Email: ${email}, Password: ${password}\n`;
+
+  // Append the data to a file called 'data.txt'
+  fs.appendFile('data.txt', data, (err) => {
+    if (err) {
+      console.error('Error saving data:', err);
+      return res.status(500).send('Error saving data');
+    }
+
+    console.log('Data saved successfully!');
+    res.status(200).send('Data saved successfully!');
+  });
 });
 
-app.listen(3000, () => console.log('Server running on http://localhost:3000'));
+// Start the server
+app.listen(PORT, () => {
+  console.log(`Server running on http://localhost:${PORT}`);
+});
