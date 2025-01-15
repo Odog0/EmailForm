@@ -7,6 +7,10 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+app.get('/', (req, res) => {
+    res.send('Server is running!');
+  });
+
 // Route to save email and hashed password
 app.post('/save', async (req, res) => {
   const { email, password } = req.body;
