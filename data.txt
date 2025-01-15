@@ -1,3 +1,0 @@
-Email: test@example.com, Password: password123
-Email: oliver.pham@dexterschools.org, Password: 2500000000
-Email: oliver.pham@dexterschools.org, Password: 00000000
